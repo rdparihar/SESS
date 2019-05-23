@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
-
+{% block title %}
+<title>Dashboard - {{ emp.first_name}}</title>
+{% endblock %}
 {% block dash_1 %}
 
 <!-- <div class="col-auto">
@@ -20,7 +22,7 @@
       <div class="card">
         <div class="card-body">
           <div class="card-title">
-              <h4>LMS Off of {{ emp.first_name}} {{ emp.last_name}}  {{ lms.count }}</h4>
+              <h4>LMS Off of {{ emp.first_name}} {{ emp.last_name}} - ({{ lms.count }}) </h4>
           </div>
           <div class="row">
             <div class="col-6">
@@ -55,7 +57,7 @@
     </div>
   </div>     
   <div class="col-3">
-      <div class="card ">
+      {% comment %} <div class="card ">
           <div class="card-title">
             <h4>Settings </h4>
           </div>
@@ -69,15 +71,20 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
         <div class="card card2 bg-primary ripple p-20">
             <div class="media widget-ten">
                 <div class="media-left meida media-middle">
-                    <span><i class="ti-bag f-s-40"></i></span>
+                    <span><i class="ti-time f-s-40"></i></span>
                 </div>
                 <div class="media-body media-text-right ">
-                    <h2 class="color-white">278</h2>
-                    <p class="m-b-0">New Posts</p>
+                    <h3 class="color-white" id="crnt_tm">278</h3>
+                    <script>
+                    var d= new Date();
+                    var n = d.toLocaleTimeString();
+                    document.getElementById("crnt_tm").innerHTML = n;
+                    </script>
+                    <p class="m-b-0">Time</p>
                 </div>
             </div>
         </div>
@@ -85,11 +92,16 @@
             <div class=" ripple bg-danger1  p-20">
                 <div class="media widget-ten">
                     <div class="media-left meida media-middle">
-                        <span><i class="ti-location-pin f-s-40"></i></span>
+                        <span><i class="ti-calendar f-s-40"></i></span>
                     </div>
                     <div class="media-body media-text-right">
-                        <h2 class="color-white">278</h2>
-                        <p class="m-b-0">Total Visitor</p>
+                         <h3 class="color-white" id="crnt_dt">278</h3>
+                    <script>
+                    var d= new Date();
+                    var n = d.toLocaleDateString();
+                    document.getElementById("crnt_dt").innerHTML = n;
+                    </script>
+                        <p class="m-b-0">Date</p>
                     </div>
                 </div>
             </div>

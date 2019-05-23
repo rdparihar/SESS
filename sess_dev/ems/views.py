@@ -1,29 +1,24 @@
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views import generic,View
+from django.views import generic,View 
 from django.views.generic import TemplateView
-from .forms import UserForm
-from timesheets.models import TimeRecords
+from .forms import UserForm, ProfileForm
+from tms.models import TimeRecords
 from ems.models import EmpProfile
 from lms.models import lms_details
-from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin, LoginRequiredMixin
 
-
-
-## Class based view 
 class EmployeeListView(LoginRequiredMixin, generic.ListView):
     model = User
     template_name = "ems/employee_list.html"
-    login_url = '/login/'
-     
+    login_url = '/login/'     
     
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
         context['EmpProfile_list'] = EmpProfile.objects.all()
         return context
 
@@ -41,8 +36,6 @@ class EmployeeListView(LoginRequiredMixin, generic.ListView):
             object_list = self.model.objects.all().exclude(is_superuser = 1)
         return object_list
 
-
-# class EmployeeDetailView(UserPassesTestMixin, generic.DetailView):
 class EmployeeDetailView(LoginRequiredMixin, generic.DetailView):
     model = User
     template_name = "ems/employee_detail.html"
@@ -50,18 +43,11 @@ class EmployeeDetailView(LoginRequiredMixin, generic.DetailView):
   
     def get_context_data(self, **kwargs):
         context = super(EmployeeDetailView, self).get_context_data(**kwargs)
-        emp_id = self.request.session.get('emp_id')
-  
+        emp_id = self.request.session.get('emp_id')  
         context['tags'] = TimeRecords.objects.all().filter(emp_id = emp_id)
         return context
-    # def test_func(self):
-    #     return self.request.user.email.endswith('@example.com')
 
-# # For Login
-# class UserFormView(View):
-#     form_class = UserForm
-
-# Create New Employee
+@login_required(login_url='/login/')
 def EmployeeCreateView(request):
     form = UserForm(request.POST or None)
     if form.is_valid():
@@ -74,21 +60,19 @@ def EmployeeCreateView(request):
     template = "ems/registration_form.html"
     return render(request, template, context )
 
-# update Employee
+@login_required(login_url='/login/')
 def EmployeeUpdateView(request, id):
     obj = get_object_or_404(User, id=id)
     form = UserForm(request.POST or None, instance=obj)
     context = { 'form' : form }
-
     if form.is_valid():
         obj = form.save(commit=False)
         obj.save()
         return HttpResponseRedirect("/employee/{num}".format(num=obj.id))
-
     template = "ems/employee_update.html"
     return render(request, template, context )
 
-# Delete the Employee from the table
+@login_required(login_url='/login/')
 def EmployeeDeleteView(request, id=None):
     emp = get_object_or_404(User, id=id) 
     if request.method == "POST":
@@ -97,7 +81,6 @@ def EmployeeDeleteView(request, id=None):
     context = { "emp" : emp }
     template = "ems/delete-view.html"
     return render(request, template, context )
-
 
 @login_required(login_url='/login/')
 def Profile(request):
@@ -109,25 +92,35 @@ def Profile(request):
     context = { "emp" : emp, "lms" : lms }
     return render(request, template, context )
 
+@login_required(login_url='/login/')
+def ProfileCreateView(request):
+    username = request.session.get('username')
+    form = ProfileForm(request.POST or None)
+    context = { 'form' : form }
+    userid = User.objects.values("id").get(username=username)
+    try:
+        userid_1 = EmpProfile.objects.values("emp_con_primary").get(username_id=userid['id'])
+        return redirect("/")
 
+    except EmpProfile.DoesNotExist:
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.username_id = userid['id']
+            obj.save()
+            return redirect("/")
 
+    context = { 'form' : form }
+    template = "create_profile_form.html"
+    return render(request, template, context )
 
-
+#-------------------------------------NOT IN USE--------------------------------------#
 # #Envoice
 class EmpInvoiceView(LoginRequiredMixin, generic.ListView):
     model = User
     template_name = "ems/employee_invoice.html"
     login_url = '/login/'
     context_object_name = 'user'    
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         emp_id = self.request.session.get('emp_id')
-#         print(emp_id)
-#         context['user_empprofile'] = EmpProfile.objects.all().filter(emp_id = emp_id)
-#         return context
-
-  
+ 
 class EmpOrgnView(LoginRequiredMixin, generic.ListView):
     model = User
     template_name = "ems/employee_chart.html"
@@ -146,3 +139,5 @@ class EmpOrgnView(LoginRequiredMixin, generic.ListView):
         else:
             object_list = self.model.objects.all().exclude(is_superuser = 1)
         return object_list
+
+

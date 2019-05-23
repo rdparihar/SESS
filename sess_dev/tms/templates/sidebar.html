@@ -1,0 +1,100 @@
+<div class="left-sidebar">
+    <div class="scroll-sidebar">        
+        <nav class="sidebar-nav" >
+            <ul id="sidebarnav" class="in">
+                <li class="nav-devider"></li>
+                <li class="nav-label">Main</li>
+                <li class="ripple">
+                    <a href="{% url 'dashboard' %}" ><i class="fas fa-home"></i><span class="hide-menu">Dashbord </span></a>
+                </li>
+               
+                <li>
+                    <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle ripple">
+                        <i class="fas fa-users"></i>
+                        <span class="hide-menu">Employees </span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="pageSubmenu1">
+                        <li class="ripple"><a href="#">Manage</a></li>
+                        <li class="ripple"><a href="#">Profile</a></li>
+                        <li class="ripple"><a href="#">Setting</a></li>
+                    </ul>                                
+                </li>
+                {% comment %} <li class="ripple">
+                    <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-building"></i><span class="hide-menu">Administration </span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="adminSubmenu">
+                        <li class="ripple"><a href="#">Anouncement</a></li>
+                        <li class="ripple"><a href="#">Holiday Schedule </a></li>
+                        <li class="ripple"><a href="#">Setting</a></li>
+                    </ul>
+                </li> {% endcomment %}
+                <li class="ripple">
+                    <a href="#salSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-wallet"></i><span class="hide-menu">Salary </span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="salSubmenu">
+                        <li class="ripple"><a href="#">Statement</a></li>
+                        <li class="ripple"><a href="#">Invoice </a></li>
+                        <li class="ripple"><a href="#">Setting</a></li>
+                    </ul>
+                </li>
+                <li class="ripple">
+                    <a href="{% url 'error' %}"><i class="fas fa-chart-line"></i><span class="hide-menu">Performance  </span></a>
+                </li>
+                <li class="ripple"> 
+                    <a  href="{% url 'error' %}" ><i class="fas fa-sliders-h"></i></i><span class="hide-menu">Settings </span></a>
+                </li>
+                {% comment %} <li class="ripple sweetalert">
+                    <a href="#"><span class="hide-menu sweet-wrong ">Wrong </span></a>
+                    <div class="card-content">
+                        <div class="sweetalert m-t-15">
+                        </div>  
+                    </div>
+                </li> {% endcomment %}
+                {% if user.is_staff %}
+                <li class="nav-label">Admin</li>
+                <li class="ripple">
+                        <a href="#navSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <i class="fas fa-building"></i><span class="hide-menu">Administration </span>
+                        </a>
+                        <ul class="collapse list-unstyled" id="navSubmenu">
+                                
+                                
+                            <li class="nav-item dropdown">
+                                <a class="dropdown-toggle {% if user.is_anonymous %} disabled  {% endif %}" href="#lmsSub" data-toggle="collapse" aria-expanded="false">
+                                    Approve
+                                </a>
+                                <ul class="collapse list-unstyled" id="lmsSub">
+                                        <li> <a class="-" href="{% url 'lmsApprove' %}">Leaves Approve </a></li>
+                                        <li> <a class="-" href="{% url 'timeEntryApprove' %}">Timesheet Approve </a></li>
+
+                                </ul>
+                                
+                            </li>
+                                {% comment %} <li class="nav-item">
+                                    <a class="nav-link disabled" href="#">Disabled</a>
+                                </li> {% endcomment %}
+                            </ul>
+                </li>
+                {% endif %}
+{% comment %}                 
+            {% if user.is_authenticated %}
+                <li class="nav-label ">Users</li>
+                <li class="ripple">
+                    <a href="{% url 'dashboard' %}"><i class="fas fa-hand-holding"></i><span class="hide-menu">My Borrowed </span> </a>
+                </li>
+            {% endif %}
+            {{user.is_staff}}
+            {% if user.is_staff %}
+                <li class="nav-label">Staff</li>
+                <li class="ripple">
+                    <a href="{% url 'dashboard' %}">
+                        <i class="fas fa-hand-holding"></i><span class="hide-menu">All Borrowed </span>
+                    </a>
+                </li>
+            {% endif %} {% endcomment %}
+            </ul>
+        </nav>
+    </div>
+</div>

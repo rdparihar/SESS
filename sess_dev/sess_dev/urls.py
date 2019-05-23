@@ -9,14 +9,13 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('timesheets/', include('timesheets.urls')),
-    path('lms/', include('lms.urls')),
-    path('employee/', include('ems.urls'), name="em"),
-    path('inbox/', include('inbox.urls')),
     path('', views.Dashboard, name='home'),
     path('dashboard/', views.Dashboard, name='dashboard'),
     path('login/', auth_views.login, name='login'),
     path('logout/', auth_views.logout, {'template_name': 'logged_out.html'},  name='logout'),
+    path('employee/', include('ems.urls'), name="em"),
+    path('leave/', include('lms.urls')),
+    path('time-sheet/', include('tms.urls')),
     path('error/', views.error, name='error'),
 
     # path('api/', include('api.urls'), name='api'),  

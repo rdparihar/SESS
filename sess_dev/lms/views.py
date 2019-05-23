@@ -1,38 +1,41 @@
-from django.urls import reverse_lazy
-from django.shortcuts import render
-from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.views.generic import CreateView, ListView, DeleteView, UpdateView, TemplateView
-from .models import lms_details
 from django.contrib.auth.models import User
-from ems.models import EmpProfile
-from .forms import lmsCreateForm,lmsViewForm,lmsUpdateForm,lmsApproveForm
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin, LoginRequiredMixin
+from django.shortcuts import render, redirect , get_object_or_404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic import CreateView, ListView, DeleteView, UpdateView, TemplateView
 import datetime
-
-
+from ems.models import EmpProfile
+from ems.views import ProfileCreateView
+from .forms import lmsCreateForm,lmsViewForm,lmsUpdateForm,lmsApproveForm
+from .models import lms_details
 
 class lmsList(LoginRequiredMixin, ListView):
     model = lms_details
     login_url = '/login/'
     template_name = "lms/lms_list.html"
-    context_object_name = 'lms'  
+    context_object_name = 'lms' 
     
-   
 
     def get_context_data(self, **kwargs):
-            # Call the base implementation first to get a context
             context = super().get_context_data(**kwargs)
+            print(context)
             emp_id = self.request.session.get('emp_id')
-            # Add in a QuerySet of all the books
+            print (emp_id)
             context['EmpUser_list'] = EmpProfile.objects.all()
             context['User_detail'] = User.objects.all()
             context['lms'] = lms_details.objects.filter(emp_id = emp_id)
+            
+                
+           
             context['lms_approved']=lms_details.objects.all().filter(emp_id = emp_id,ls_status = 'A')
-            now = datetime.datetime.now() 
-            y=now.year
+            y = datetime.datetime.now().year 
+            print(context)
             context['year_range'] = range(y-3, y+2)
+            
 
+          
             if self.request.GET.get('q'):
                 q = self.request.GET.get('q')
                 emp_id = self.request.session.get('emp_id')
@@ -54,9 +57,6 @@ class lmsCreate(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('lmsList')
     template_name = "lms/lms_create.html"
 
-
-
-
 class lmsUpdate(LoginRequiredMixin, UpdateView):
     model = lms_details
     login_url = '/login/' 
@@ -69,7 +69,6 @@ class lmsDelete(LoginRequiredMixin, DeleteView):
     login_url = '/login/' 
     template_name = "lms/lms_delete.html"
     success_url = reverse_lazy('lmsList')
-
 
 class lmsApprove(LoginRequiredMixin, ListView):
     model = lms_details

@@ -1,0 +1,41 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+<title>New Profile</title>
+{% endblock %}
+
+{% block dash_1 %}
+{% if messages %}
+   
+{% for message in messages %}
+
+<div class="alert alert-warning alert-dismissible fade show">
+        <button type="button" class="close btn btn-dark btn-outline-{{ message.tags }} text-white" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span></button>
+        <strong>Hi {{ user.get_username }}:</strong> {{ message }} .
+       </div> 
+
+
+{% endfor %}
+
+{% endif %}
+
+
+<div class="row  " >
+        <div class="col-5"></div>
+        <div class="col-6">
+                <div class="card rd-grd-grbl text-white ">
+                        <div class="card-body ">
+                                <form action="." method="POST"> {% csrf_token %}
+                                        <div class="form-group">  
+                                                {{ form }}  
+                                        </div>
+                                        <button type="submit"  value="Create"  class="btn btn-outline-primary">Create</button></a>
+                                </form>  
+                        </div>
+                </div>
+        </div>
+        
+</div>
+{% endblock %}

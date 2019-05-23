@@ -5,7 +5,20 @@
 {% endblock %}
 
 {% block dash_1 %}
+{% if messages %}
+   
+{% for message in messages %}
 
+<div class="alert alert-warning alert-dismissible fade show">
+        <button type="button" class="close btn btn-dark btn-outline-{{ message.tags }} text-white" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span></button>
+        <strong>Hi {{ user.get_username }}:</strong> {{ message }} .
+       </div> 
+
+
+{% endfor %}
+
+{% endif %}
 <div class="row ">
                 <div class="col-12">
                     <div class="card ">
@@ -47,10 +60,10 @@
                 </div>
 </div>
 
-<div class="row " style="Xbackground-image: linear-gradient(45deg,#FF394F,#FF8090); border-radius:5px" class="card2 ">
+<div class="row " style="Xbackground-image: linear-gradient(45deg,#FF394F,#FF8090); border-radius:5px" class="card2  ">
         <div class="col-5"></div>
         <div class="col-6">
-                <div class="card ">
+                <div class="card rd-grd-grbl text-white ">
                         <div class="card-body">
                                
                                                 <form action="." method="POST"> {% csrf_token %}
