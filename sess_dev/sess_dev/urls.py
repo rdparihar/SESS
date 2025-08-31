@@ -4,7 +4,7 @@ from django.conf.urls import include
 from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LoginView, LogoutView
 from . import views
 
 urlpatterns = [
@@ -14,8 +14,8 @@ urlpatterns = [
     path('employee/', include('ems.urls'), name="em"),
     path('', views.Dashboard, name='home'),
     path('dashboard/', views.Dashboard, name='dashboard'),
-    path('login/', auth_views.login, name='login'),
-    path('logout/', auth_views.logout, {'template_name': 'logged_out.html'},  name='logout'),
+    path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('logout/', LogoutView.as_view(template_name='registration/logged_out.html'), name='logout'),
     path('error/', views.error, name='error'),
 
     # path('api/', include('api.urls'), name='api'),  
