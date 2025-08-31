@@ -39,7 +39,7 @@ class lmsList(LoginRequiredMixin, ListView):
                 print(emp_id)
                 
                 context['lms'] = self.model.objects.filter(emp_id = emp_id).filter(ls_date__icontains = q)
-                if q is '0':
+                if q == '0':
                     context['year'] = 'All'
                     return context
 
