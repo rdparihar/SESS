@@ -8,7 +8,7 @@ class University(models.Model):
         verbose_name = "University"
         verbose_name_plural = "Universities"
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class Student(models.Model):
@@ -20,5 +20,5 @@ class Student(models.Model):
         verbose_name = "Student"
         verbose_name_plural = "Students"
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)
