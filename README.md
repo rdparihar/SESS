@@ -28,6 +28,18 @@
   1. bla
   2. bla
   
-  ## 02-08-2018
+## 02-08-2018
 1. add links/dropdown for lms create/view
 2. disable edit/delete in lms list based on status (enable only if status=pending)
+
+## Testing
+
+Install dependencies and run the Django test suite:
+
+```bash
+pip install -r requirements.txt
+cd sess_dev
+python manage.py test
+```
+
+The test suite covers key models and views in the timesheets, ems, and lms apps.

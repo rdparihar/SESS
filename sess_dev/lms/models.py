@@ -13,7 +13,7 @@ class lms_count(models.Model):
         ordering = ["emp_id"]
 
     def __str__(self):
-        return self.emp_id
+        return str(self.emp_id)
 
 class lms_details(models.Model):
     LEAVE_STATUS = ( ('A', 'APPROVED'), ('P', 'PENDING'), ('R', 'REJECTED') )
