@@ -1,0 +1,25 @@
+{
+  "teams": [
+    {"name": "Platform", "description": "Platform engineering"},
+    {"name": "Product", "description": "Product delivery"}
+  ],
+  "users": [
+    {"email": "alice@example.com", "name": "Alice", "role": "Manager", "team": "Platform"},
+    {"email": "bob@example.com", "name": "Bob", "role": "SRE", "team": "Platform"},
+    {"email": "charlie@example.com", "name": "Charlie", "role": "Engineer", "team": "Product"}
+  ],
+  "projects": [
+    {"name": "Backend Revamp", "description": "Modernize APIs", "team": "Platform"},
+    {"name": "Mobile", "description": "Mobile client", "team": "Product"}
+  ],
+  "runbooks": [
+    {"title": "Restart Service", "content": "ssh and restart", "project": "Backend Revamp"}
+  ],
+  "pto": [
+    {"user": "alice@example.com", "start_date": "2024-07-01", "end_date": "2024-07-05"}
+  ],
+  "allocations": [
+    {"user": "bob@example.com", "project": "Backend Revamp", "percent": 50},
+    {"user": "charlie@example.com", "project": "Mobile", "percent": 100}
+  ]
+}
